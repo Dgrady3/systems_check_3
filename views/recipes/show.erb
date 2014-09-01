@@ -1,0 +1,20 @@
+<center><h1><%= @details[0]["recipes"] %></h1></center>
+
+<table>
+  <tbody>
+    <tr>
+      <th scope = "row">Description</th>
+      <td><%=@details[0]["description"]%></td>
+    </tr>
+    <tr>
+      <th scope = "row">Instructions</th>
+      <td><%=@details[0]["instructions"]%></td>
+    </tr>
+    <tr>
+      <th scope = "row">Ingredients</th>
+      <td><% @details.each do |row| %>
+      <%= row["ingredients"] %>
+      <% end %></td>
+    </tr>
+  </tbody>
+</table>

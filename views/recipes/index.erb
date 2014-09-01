@@ -1,0 +1,13 @@
+<head>
+
+</head>
+
+<h3> Welcome to the Recipe Book! </h3>
+
+<ul>
+  <% @recipes.each do |recipe| %>
+    <li>
+       <a href="/recipes/<%= recipe['id'] %>"><%= recipe['name'] %></a>
+    </li>
+  <% end %>
+</ul>
