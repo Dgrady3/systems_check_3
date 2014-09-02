@@ -3,7 +3,6 @@ require 'sinatra/reloader'
 require 'pry'
 require 'pg'
 
-
 # User views a list of recipies:
 # Visiting /recipies will show a list of recipies sorted alphbetically by name.
 # Each recipie name is a link to the details page for the recipie
@@ -27,17 +26,18 @@ def db_connection
   end
 end
 
-
 #####################################
               # ROUTES
 #####################################
 get '/recipes' do
   query = 'SELECT * FROM recipes
   ORDER BY name;'
+
   db_connection do |conn|
     @recipes = conn.exec(query).to_a
   end
-erb :'recipes/index'
+
+  erb :'recipes/index'
 end
 
 
@@ -47,12 +47,10 @@ get '/recipes/:id' do
   FROM recipes
   JOIN ingredients ON recipes.id = ingredients.recipe_id
   WHERE recipes.id = $1;'
+
   db_connection do |conn|
     @details = conn.exec_params(query, [id]).to_a
   end
-erb :'recipes/show'
+
+  erb :'recipes/show'
 end
-
-
-
-
