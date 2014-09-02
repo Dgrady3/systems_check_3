@@ -26,16 +26,22 @@ def db_connection
   end
 end
 
+def all_recipes
+  query = 'SELECT * FROM recipes
+  ORDER BY name;'
+
+  recipes = db_connection do |conn|
+    conn.exec(query)
+  end
+
+  recipes.to_a
+end
+
 #####################################
               # ROUTES
 #####################################
 get '/recipes' do
-  query = 'SELECT * FROM recipes
-  ORDER BY name;'
-
-  db_connection do |conn|
-    @recipes = conn.exec(query).to_a
-  end
+  @recipes = all_recipes
 
   erb :'recipes/index'
 end
