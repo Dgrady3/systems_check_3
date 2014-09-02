@@ -37,6 +37,19 @@ def all_recipes
   recipes.to_a
 end
 
+def get_recipe_by(id)
+  query = 'SELECT recipes.id, recipes.name as recipes, recipes.instructions, recipes.description, ingredients.name as ingredients
+  FROM recipes
+  JOIN ingredients ON recipes.id = ingredients.recipe_id
+  WHERE recipes.id = $1;'
+
+  recipe = db_connection do |conn|
+    conn.exec_params(query, [id])
+  end
+
+  recipe.to_a
+end
+
 #####################################
               # ROUTES
 #####################################
@@ -46,17 +59,8 @@ get '/recipes' do
   erb :'recipes/index'
 end
 
-
 get '/recipes/:id' do
-  id = params[:id]
-  query = 'SELECT recipes.id, recipes.name as recipes, recipes.instructions, recipes.description, ingredients.name as ingredients
-  FROM recipes
-  JOIN ingredients ON recipes.id = ingredients.recipe_id
-  WHERE recipes.id = $1;'
-
-  db_connection do |conn|
-    @details = conn.exec_params(query, [id]).to_a
-  end
+  @details = get_recipe_by(params[:id])
 
   erb :'recipes/show'
 end
